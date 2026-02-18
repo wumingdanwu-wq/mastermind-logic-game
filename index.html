@@ -1,20 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Instruction Page - Number Secret</title>
+    <title>游戏说明 - 数字解密</title>
     <style>
     .btn-container {
-        display: flex;         /* ፍሌክስ ቦክስን ለመጠቀም */
-        justify-content: center; /* በጎን (Horizontal) መሃል ለማድረግ */
-        align-items: center;     /* በቁመት (Vertical) መሃል ለማድረግ */
-        margin-top: 50px;      /* ከላይ ካለው ጽሁፍ እንዲርቅ (ታች እንዲሆን) */
-        width: 100%;           /* ሙሉ ስፋት እንዲኖረው */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 50px;
+        width: 100%;
     }
 
     .start-btn {
-        background: #16a34a;   /* አረንጓዴ ቀለም */
+        background: #16a34a;
         color: white;
         padding: 18px 60px;
         text-decoration: none;
@@ -28,7 +28,7 @@
 
     .start-btn:hover {
         background: #15803d;
-        transform: translateY(-3px); /* ሲነካ ትንሽ ከፍ እንዲል */
+        transform: translateY(-3px);
     }
         :root {
             --primary: #1e40af;
@@ -36,7 +36,6 @@
             --danger: #dc2626;
             --warning: #ca8a04;
             --bg-page: #dcfce7; 
-            /* የሳጥኑን ባግራውንድ ከነጭ ወደ ብርሃናማ አረንጓዴ ለመቀየር */
             --bg-card: #f0fdf4; 
         }
 
@@ -49,7 +48,7 @@
 
         .instruction-sheet {
             max-width: 850px; 
-            background: var(--bg-card); /* እዚህ ጋር ነጭ የነበረው ተቀይሯል */
+            background: var(--bg-card);
             padding: 40px; 
             border-radius: 25px;
             box-shadow: 0 15px 35px rgba(0,0,0,0.1); 
@@ -58,7 +57,6 @@
 
         h1 { color: var(--success); text-align: center; font-size: 2.5rem; margin-bottom: 30px; text-shadow: 1px 1px 1px rgba(0,0,0,0.1); }
         
-        /* የጽሁፍ ቀለሞች */
         p { color: #164e63; font-weight: 500; }
         li { color: #164e63; font-weight: 500; margin-bottom: 5px; }
 
@@ -86,86 +84,78 @@
         .win-row { background: var(--success) !important; color: white !important; font-size: 1.2rem; }
 
         .highlight-text { color: var(--danger); font-weight: 900; font-size: 1.1rem; }
-
-        .btn-container { text-align: center; margin-top: 40px; }
-        .start-btn { 
-            background: var(--success); color: white; padding: 18px 60px; 
-            text-decoration: none; border-radius: 50px; font-weight: bold; 
-            font-size: 1.5rem; display: inline-block; transition: 0.3s;
-            box-shadow: 0 5px 15px rgba(22, 163, 74, 0.4);
-        }
-        .start-btn:hover { background: #15803d; transform: translateY(-3px); }
     </style>
 </head>
 <body>
 
 <div class="instruction-sheet">
-    <h1>Welcome to "Number Secret" Game!</h1>
+    <h1>欢迎来到“数字解密”游戏！</h1>
 
     <div class="section">
-        <div class="section-title">🎯 Objective and Rules</div>
-        <p>The goal is to guess a 4-digit number with its correct position. Numbers must be between 1-9 (Zero and duplicate digits are not allowed).</p>
+        <div class="section-title">🎯 目标与规则</div>
+        <p>游戏目标是猜出一个4位数的密码及其正确位置。数字必须在 1-9 之间（不允许使用 0，且数字不能重复）。</p>
     </div>
 
     <div class="section">
-        <div class="section-title">📝 The Filter Boxes (Notes)</div>
-        <p>This is not part of the game. It is a scratchpad designed to help you remember and calculate instead of using a pen and paper. What you put here is just for your memory and doesn't affect the game; you can choose not to use it.</p>
+        <div class="section-title">📝 辅助笔记框（草稿）</div>
+        <p>这不是游戏判定的一部分，而是一个草稿区，旨在帮助您记忆和计算，替代纸笔。您在这里输入的内容仅供您自己参考，不影响游戏结果，您可以选择不使用。</p>
         <div class="note-container">
-            <div class="note-box box-red">⛔ 100% Not Present (Note)</div>
-            <div class="note-box box-yellow">❓ Uncertain (Note)</div>
-            <div class="note-box box-green">✅ 100% Present (Note)</div>
+            <div class="note-box box-red">⛔ 100% 排除 (笔记)</div>
+            <div class="note-box box-yellow">❓ 不确定 (笔记)</div>
+            <div class="note-box box-green">✅ 100% 存在 (笔记)</div>
         </div>
     </div>
 
     <div class="section">
-        <div class="section-title">💡 Using Hints</div>
-        <p>This is also an optional feature. Its purpose is to compare your last two attempts and provide a prediction hint about the presence of numbers. <span class="highlight-text">Do not rely too heavily on hints;</span> it only compares the current and previous attempts and has limited impact on winning the game.</p>
+        <div class="section-title">💡 关于提示功能</div>
+        <p>这也是一个可选功能。它的作用是比较您最近的两次尝试，并提供关于数字存在可能性的预测提示。<span class="highlight-text">请不要过度依赖提示；</span>它仅比较当前和上一次的尝试，对最终赢得游戏的作用有限。</p>
     </div>
 
     <div class="section">
-        <div class="section-title">📊 How to Play (Example)</div>
-        <p>If the secret number is <strong>1234</strong>, the results would look like this:</p>
+        <div class="section-title">📊 玩法示例 (分析)</div>
+        <p>假设神秘数字是 <strong>1234</strong>，结果将如下所示：</p>
         <table>
             <thead>
                 <tr>
-                    <th>Attempt</th>
-                    <th>Your Guess</th>
-                    <th>Found</th>
-                    <th>Position</th>
-                    <th>Meaning (Analysis)</th>
+                    <th>尝试</th>
+                    <th>你的猜测</th>
+                    <th>数字对</th>
+                    <th>位置对</th>
+                    <th>含义 (分析)</th>
                 </tr>
             </thead>
             <tbody>
                 <tr class="prev-row">
-                    <td>[Previous]</td>
+                    <td>[上一次]</td>
                     <td>1245</td>
                     <td>3</td>
                     <td>2</td>
-                    <td>1 and 2 are in their correct positions. 4 is present but in the wrong spot.</td>
+                    <td>1 和 2 位置正确。4 存在但位置错了。</td>
                 </tr>
                 <tr class="current-row">
-                    <td>[Current]</td>
+                    <td>[当前]</td>
                     <td>1345</td>
                     <td>3</td>
                     <td>1</td>
-                    <td>1, 3, and 4 are found, but only 1 is in the correct position.</td>
+                    <td>1, 3, 4 都在密码中，但只有 1 的位置是正确的。</td>
                 </tr>
                 <tr class="win-row">
-                    <td>Winner!</td>
+                    <td>胜利！</td>
                     <td>1234</td>
                     <td>4</td>
                     <td>4</td>
-                    <td>🎉 Congratulations! You found 1, 2, 3, 4 in their correct positions. You won!</td>
+                    <td>🎉 恭喜！你找到了 1, 2, 3, 4 并且位置都正确。你赢了！</td>
                 </tr>
             </tbody>
         </table>
     </div>
 
     <div class="section" style="text-align: center; margin-top: 30px;">
-        <p><strong style="color: var(--danger);">Note:</strong> To win the game, focus on "Found" and "Position" rather than relying on hint predictions.</p>
-        <h2 style="color: var(--success); font-size: 1.8rem; letter-spacing: 1px;">Think | Calculate | Predict | Win</h2>
+        <p><strong style="color: var(--danger);">注意：</strong> 想要获胜，请专注于“数字对”和“位置对”，而不是依赖提示预测。</p>
+        <h2 style="color: var(--success); font-size: 1.8rem; letter-spacing: 1px;">思考 | 计算 | 推理 | 获胜</h2>
         <div class="btn-container">
-        <a href="game.html" class="start-btn">Play the Game ➔</a>
+            <a href="game.html" class="start-btn">开始游戏 ➔</a>
+        </div>
     </div>
     
 </div>
