@@ -2,90 +2,252 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>数字逻辑解密</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>数字逻辑解密 - 游戏进行中</title>
     <style>
-        body { font-family: sans-serif; text-align: center; background-color: #f4f4f4; padding: 20px; }
-        
-        /* 笔记框设计 */
+        :root {
+            --primary: #1e40af;
+            --success: #16a34a;
+            --danger: #dc2626;
+            --warning: #ca8a04;
+            --bg-page: #f3f4f6;
+            --white: #ffffff;
+        }
+
+        * { box-sizing: border-box; }
+
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-page); 
+            text-align: center; 
+            padding: 15px; 
+            margin: 0;
+            color: #374151;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        /* 顶部导航 */
+        .header-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .back-link {
+            text-decoration: none;
+            color: var(--primary);
+            font-weight: bold;
+            font-size: 1rem;
+            padding: 8px 12px;
+            background: #e0e7ff;
+            border-radius: 8px;
+        }
+
+        h1 { margin: 10px 0 5px 0; font-size: 1.8rem; color: #111827; }
+        h2 { margin: 0 0 20px 0; font-size: 0.95rem; color: #6b7280; font-weight: normal; }
+
+        /* 笔记/草稿区 (手机端竖向排列) */
         .filter-container {
             display: flex;
-            justify-content: center;
+            flex-wrap: wrap; /* 关键：允许换行 */
             gap: 10px;
             margin-bottom: 20px;
         }
+
         .filter-box {
             flex: 1;
-            max-width: 200px;
-            padding: 10px;
-            border-radius: 8px;
-            border: 2px solid #ddd;
+            min-width: 100%; /* 手机端占满一行 */
+            background: white;
+            padding: 12px;
+            border-radius: 10px;
+            border: 2px solid #e5e7eb;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
-        .box-out { background-color: #ffebee; border-color: #d9534f; }
-        .box-maybe { background-color: #fff9c4; border-color: #fbc02d; }
-        .box-in { background-color: #e8f5e9; border-color: #4caf50; }
+
+        /* 平板以上恢复并排 */
+        @media (min-width: 600px) {
+            .filter-box { min-width: auto; }
+        }
+
+        .box-out { border-color: #fecaca; background: #fef2f2; }
+        .box-maybe { border-color: #fde68a; background: #fffbeb; }
+        .box-in { border-color: #bbf7d0; background: #f0fdf4; }
         
-        .filter-title { font-size: 0.8em; font-weight: bold; display: block; margin-bottom: 5px; }
-        .note-input { width: 90%; padding: 5px; border: 1px solid #ccc; border-radius: 4px; text-align: center; font-size: 1.1em; }
+        .filter-title { 
+            font-size: 0.9rem; 
+            font-weight: bold; 
+            display: block; 
+            margin-bottom: 8px; 
+            color: #4b5563;
+        }
 
+        .note-input { 
+            width: 100%; 
+            padding: 8px; 
+            border: 1px solid #d1d5db; 
+            border-radius: 6px; 
+            text-align: center; 
+            font-size: 1.1rem; 
+            background: rgba(255,255,255,0.8);
+        }
+
+        /* 提示框 */
         .hint-text { 
-            color: #d9534f; font-weight: bold; font-size: 1.1em; margin: 10px auto; 
-            max-width: 600px; min-height: 40px; border: 2px solid #3498db; 
-            padding: 10px; border-radius: 8px; background: white;
+            color: var(--danger); 
+            font-weight: bold; 
+            font-size: 1rem; 
+            margin: 15px auto; 
+            width: 100%;
+            max-width: 600px; 
+            min-height: 40px; 
+            border: 2px solid #bfdbfe; 
+            padding: 12px; 
+            border-radius: 12px; 
+            background: white;
+            line-height: 1.5;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
 
+        /* 游戏控制区 (输入框+按钮) */
+        .game-controls {
+            display: flex;
+            gap: 10px;
+            max-width: 600px;
+            margin: 0 auto 15px auto;
+        }
+
+        input#ar { 
+            flex: 2; /* 输入框占2份 */
+            padding: 12px; 
+            font-size: 1.2rem; 
+            border: 2px solid var(--primary); 
+            border-radius: 10px; 
+            text-align: center;
+            outline: none;
+            -webkit-appearance: none; /* 去除iOS默认圆角 */
+        }
+        
+        input#ar:focus { border-color: var(--warning); box-shadow: 0 0 0 3px rgba(202, 138, 4, 0.2); }
+
+        button { 
+            font-size: 1.1rem; 
+            cursor: pointer; 
+            border: none; 
+            border-radius: 10px; 
+            font-weight: bold; 
+            transition: transform 0.1s;
+        }
+
+        button:active { transform: scale(0.96); }
+
+        .check-btn {
+            flex: 1; /* 按钮占1份 */
+            background-color: var(--success); 
+            color: white; 
+            padding: 12px;
+            box-shadow: 0 4px 6px rgba(22, 163, 74, 0.3);
+        }
+
+        .reset-btn { 
+            width: 100%; 
+            max-width: 600px;
+            background-color: white; 
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            padding: 10px;
+            margin-top: 5px;
+        }
+
+        /* 历史记录区 */
         #history { 
-            margin-top: 20px; border-top: 2px solid #333; padding-top: 10px; 
-            text-align: left; display: inline-block; width: 100%; max-width: 600px;
+            margin-top: 25px; 
+            padding-top: 10px; 
+            text-align: left; 
+            display: block; 
+            width: 100%; 
+            max-width: 600px;
+            margin-left: auto; 
+            margin-right: auto;
         }
-
-        #ss { color: #888; font-size: 0.8em; }
-        input#ar { padding: 10px; font-size: 16px; width: 150px; border: 2px solid #3498db; border-radius: 5px; }
-        button { padding: 10px 20px; font-size: 16px; cursor: pointer; background-color: #5cb85c; color: white; border: none; border-radius: 5px; font-weight: bold; margin: 5px; }
-        .reset-btn { background-color: #3498db; }
 
         .attempt-row { 
-            margin: 5px 0; padding: 10px; border-radius: 5px; background-color: white; 
-            border: 1px solid #ddd; font-size: 1em; color: #0056b3; 
-            display: block;
+            margin: 8px 0; 
+            padding: 15px; 
+            border-radius: 12px; 
+            background-color: white; 
+            border: 1px solid #e5e7eb; 
+            font-size: 1.1rem; 
+            color: #374151; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
         
-        .row-red { border-left: 15px solid #ff0000; background-color: #fff0f0; font-weight: bold; }
-        .row-yellow { border-left: 15px solid #ffcc00; background-color: #fffdf0; }
-        .row-normal { border-left: 5px solid #ddd; }
+        .row-red { border-left: 10px solid var(--danger); background-color: #fff1f2; font-weight: bold; }
+        .row-yellow { border-left: 10px solid var(--warning); background-color: #fffbeb; }
+        .row-normal { border-left: 6px solid #d1d5db; }
 
-        .label-red { color: #ff0000; font-weight: bold; }
-        .label-yellow { color: #b8860b; font-weight: bold; }
+        .status-tag {
+            font-size: 0.75rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-right: 8px;
+            text-transform: uppercase;
+        }
+        .tag-red { background: var(--danger); color: white; }
+        .tag-yellow { background: var(--warning); color: white; }
 
-        strong { color: #2c3e50; font-size: 1.1em; }
+        /* 结果文字优化 */
+        .result-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            font-size: 0.9rem;
+            color: #6b7280;
+        }
+        .result-main {
+            font-size: 1.1rem;
+            color: #111827;
+            font-weight: bold;
+        }
+
+        strong { color: #111827; font-weight: 800; font-size: 1.2em; }
     </style>
 </head>
 <body>
-    <div style="text-align: left; margin-bottom: 10px;">
-        <a href="index.html" style="text-decoration: none; color: blue; font-weight: bold;">⬅ 返回说明页</a>
+    <div class="header-nav">
+        <a href="index.html" class="back-link">⬅ 返回说明</a>
     </div>
-    <h1>开始游戏</h1>
-    <h2>输入的数字不能重复，且不能包含 0。</h2>
+
+    <h1>数字逻辑解密</h1>
+    <h2>规则：4位不重复数字 (无0)</h2>
 
     <div class="filter-container">
         <div class="filter-box box-out">
-            <span class="filter-title">⛔ 100% 排除 (笔记)</span>
-            <input type="text" class="note-input" placeholder="...">
+            <span class="filter-title">⛔ 排除 (笔记)</span>
+            <input type="text" class="note-input" placeholder="输入排除项...">
         </div>
         <div class="filter-box box-maybe">
-            <span class="filter-title">❓ 不确定 (笔记)</span>
-            <input type="text" class="note-input" placeholder="...">
+            <span class="filter-title">❓ 存疑 (笔记)</span>
+            <input type="text" class="note-input" placeholder="输入存疑项...">
         </div>
         <div class="filter-box box-in">
-            <span class="filter-title">✅ 100% 存在 (笔记)</span>
-            <input type="text" class="note-input" placeholder="...">
+            <span class="filter-title">✅ 确定 (笔记)</span>
+            <input type="text" class="note-input" placeholder="输入确定项...">
         </div>
     </div>
 
-    <p id="ss"></p> 
-    <p id="h" class="hint-text"></p>
-    <input id="ar" type="text" maxlength="4" placeholder="输入4位数字" onkeypress="if(event.key === 'Enter') checkGuess()">
-    <button onclick="checkGuess()">检查</button>
-    <button class="reset-btn" onclick="resetGame()">重新开始</button>
+    <p id="h" class="hint-text">准备好了吗？在下方输入你的猜测...</p>
+    
+    <div class="game-controls">
+        <input id="ar" type="number" pattern="[0-9]*" inputmode="numeric" maxlength="4" placeholder="输入4位数字" onkeypress="if(event.key === 'Enter') checkGuess()">
+        <button class="check-btn" onclick="checkGuess()">检查</button>
+    </div>
+    
+    <button class="reset-btn" onclick="resetGame()">🔄 重新开始游戏</button>
     
     <div id="history"></div>
 
@@ -100,6 +262,7 @@
             let r = Math.floor(Math.random() * 9) + 1; 
             if (!targetArray.includes(r)) targetArray.push(r);
         }
+        console.log("Cheater! Target is: " + targetArray.join("")); // 调试用
     }
 
     function resetGame() {
@@ -107,11 +270,10 @@
         firstNumber = null;
         firstpm = null;
         document.getElementById("history").innerHTML = "";
-        document.getElementById("h").innerHTML = "";
+        document.getElementById("h").innerHTML = "游戏已重置，请输入新的猜测...";
         document.getElementById("ar").value = "";
         let inputs = document.getElementsByClassName("note-input");
         for(let i=0; i<inputs.length; i++) inputs[i].value = "";
-        alert("游戏已重置！");
     }
 
     generateTarget();
@@ -122,7 +284,7 @@
         let historyDiv = document.getElementById("history");
 
         if (userInput.length !== 4 || new Set(userInput).size !== 4 || userInput.includes("0")) {
-            alert("请输入4个不重复的数字 (1-9)！");
+            alert("⚠️ 格式错误：\n请输入 4 个不重复的数字 (1-9)");
             return;
         }
 
@@ -136,10 +298,11 @@
         let currentTotalPm = position + mark;
         let hintMsg = "";
 
+        // 逻辑提示核心部分（保持不变，仅优化显示文字）
         if (firstNumber === null) {
             firstNumber = userInput;
             firstpm = currentTotalPm;
-            hintMsg = "第一次尝试已记录。第二次猜测后将提供提示...";
+            hintMsg = "记录成功！再试一次，我将对比这两次猜测给你提示...";
         } else {
             let secondNumber = userInput;
             let secondpm = currentTotalPm;
@@ -149,6 +312,7 @@
             }
 
             let totalPm = firstpm + secondpm;
+            // 保持原有的复杂逻辑判断 case ...
             switch (true) {
                 case (m == 0 && firstpm == 2 && secondpm == 2): hintMsg = "提示：这两次尝试中均未包含的数字，绝对不在密码中。"; break;
                 case (m == 0 && totalPm == 3): hintMsg = "提示：确定这两次尝试中均未包含的某些数字是密码的一部分。"; break;
@@ -181,34 +345,57 @@
             firstNumber = secondNumber; firstpm = secondpm;
         }
 
+        // 清除旧样式
         let rows = historyDiv.getElementsByClassName('attempt-row');
         for (let i = 0; i < rows.length; i++) {
             rows[i].classList.remove('row-red', 'row-yellow');
             rows[i].classList.add('row-normal');
-            let oldLabel = rows[i].getElementsByClassName('status-label')[0];
-            if (oldLabel) oldLabel.remove();
+            // 移除旧的标签
+            let oldTag = rows[i].querySelector('.status-tag');
+            if(oldTag) oldTag.remove();
         }
 
-        let currentResult = `猜测: <strong>${userInput}</strong> | 数字对: ${currentTotalPm} | 位置对: ${position}`;
+        // 创建新行
         let newRow = document.createElement('div');
         newRow.className = 'attempt-row row-red';
-        newRow.innerHTML = `<span class="status-label label-red">[当前尝试] </span>` + currentResult;
         
+        let tagHtml = `<span class="status-tag tag-red">当前</span>`;
+        
+        // 专门为手机优化的HTML结构
+        newRow.innerHTML = `
+            <div>
+                ${tagHtml} <strong>${userInput}</strong>
+            </div>
+            <div class="result-info">
+                <span class="result-main">数字对:${currentTotalPm} | 位置对:${position}</span>
+            </div>
+        `;
+        
+        // 标记上一行
         if (rows.length > 0) {
             rows[0].classList.replace('row-normal', 'row-yellow');
-            let yellowLabel = document.createElement('span');
-            yellowLabel.className = 'status-label label-yellow';
-            yellowLabel.innerText = '[上次尝试] ';
-            rows[0].prepend(yellowLabel);
+            let prevContent = rows[0].innerHTML;
+            // 简单的插入方式
+            if(!rows[0].innerHTML.includes('status-tag')) {
+                 rows[0].insertAdjacentHTML('afterbegin', `<span class="status-tag tag-yellow">上次</span>`);
+            } else {
+                 rows[0].querySelector('.status-tag').className = 'status-tag tag-yellow';
+                 rows[0].querySelector('.status-tag').innerText = '上次';
+            }
         }
 
         if (position === 4) {
-            newRow.innerHTML = `🎉 恭喜！正确数字是 <strong>${userInput}</strong>。`;
-            document.getElementById("h").innerHTML = "游戏通关！";
+            newRow.innerHTML = `<div style="text-align:center; width:100%; color:#16a34a;">
+                🎉 <strong>恭喜！</strong><br>答案就是 ${userInput}
+            </div>`;
+            document.getElementById("h").innerHTML = "🎉 游戏通关！真棒！";
+            newRow.style.borderLeftColor = "#16a34a";
+            newRow.style.background = "#dcfce7";
         }
 
         historyDiv.insertBefore(newRow, historyDiv.firstChild);
         inputField.value = ""; 
+        inputField.focus(); // 聚焦回输入框
     }
     </script>
 </body>
