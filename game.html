@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
-    <title>Mastermind Logic Game</title>
+    <meta charset="UTF-8">
+    <title>数字逻辑解密</title>
     <style>
         body { font-family: sans-serif; text-align: center; background-color: #f4f4f4; padding: 20px; }
         
-        /* Note Boxes Design */
+        /* 笔记框设计 */
         .filter-container {
             display: flex;
             justify-content: center;
@@ -60,31 +61,31 @@
 </head>
 <body>
     <div style="text-align: left; margin-bottom: 10px;">
-        <a href="index.html" style="text-decoration: none; color: blue; font-weight: bold;">⬅ Back to Instructions</a>
+        <a href="index.html" style="text-decoration: none; color: blue; font-weight: bold;">⬅ 返回说明页</a>
     </div>
-    <h1>Play the Game</h1>
-    <h2>Entered numbers must not repeat and cannot contain zero.</h2>
+    <h1>开始游戏</h1>
+    <h2>输入的数字不能重复，且不能包含 0。</h2>
 
     <div class="filter-container">
         <div class="filter-box box-out">
-            <span class="filter-title">⛔ 100% Out (Notes)</span>
+            <span class="filter-title">⛔ 100% 排除 (笔记)</span>
             <input type="text" class="note-input" placeholder="...">
         </div>
         <div class="filter-box box-maybe">
-            <span class="filter-title">❓ Uncertain (Notes)</span>
+            <span class="filter-title">❓ 不确定 (笔记)</span>
             <input type="text" class="note-input" placeholder="...">
         </div>
         <div class="filter-box box-in">
-            <span class="filter-title">✅ 100% In (Notes)</span>
+            <span class="filter-title">✅ 100% 存在 (笔记)</span>
             <input type="text" class="note-input" placeholder="...">
         </div>
     </div>
 
     <p id="ss"></p> 
     <p id="h" class="hint-text"></p>
-    <input id="ar" type="text" maxlength="4" placeholder="Enter 4 digits" onkeypress="if(event.key === 'Enter') checkGuess()">
-    <button onclick="checkGuess()">Check</button>
-    <button class="reset-btn" onclick="resetGame()">Restart Game</button>
+    <input id="ar" type="text" maxlength="4" placeholder="输入4位数字" onkeypress="if(event.key === 'Enter') checkGuess()">
+    <button onclick="checkGuess()">检查</button>
+    <button class="reset-btn" onclick="resetGame()">重新开始</button>
     
     <div id="history"></div>
 
@@ -110,7 +111,7 @@
         document.getElementById("ar").value = "";
         let inputs = document.getElementsByClassName("note-input");
         for(let i=0; i<inputs.length; i++) inputs[i].value = "";
-        alert("The game has been restarted!");
+        alert("游戏已重置！");
     }
 
     generateTarget();
@@ -121,7 +122,7 @@
         let historyDiv = document.getElementById("history");
 
         if (userInput.length !== 4 || new Set(userInput).size !== 4 || userInput.includes("0")) {
-            alert("Please enter 4 non-repeating digits (1-9)!");
+            alert("请输入4个不重复的数字 (1-9)！");
             return;
         }
 
@@ -138,7 +139,7 @@
         if (firstNumber === null) {
             firstNumber = userInput;
             firstpm = currentTotalPm;
-            hintMsg = "First attempt recorded. A hint will be provided after your second guess...";
+            hintMsg = "第一次尝试已记录。第二次猜测后将提供提示...";
         } else {
             let secondNumber = userInput;
             let secondpm = currentTotalPm;
@@ -149,32 +150,32 @@
 
             let totalPm = firstpm + secondpm;
             switch (true) {
-                case (m == 0 && firstpm == 2 && secondpm == 2): hintMsg = "Hint: The numbers not included in these two attempts are definitely not in the secret code."; break;
-                case (m == 0 && totalPm == 3): hintMsg = "Hint: It is certain that numbers not included in either attempt are part of the secret code."; break;
-                case (m == 1 && firstpm == 1 && secondpm == 3): hintMsg = "Hint: At least two numbers in the current attempt that were not in the previous one are definitely in the secret code."; break;
-                case (m == 1 && firstpm == 3 && secondpm == 1): hintMsg = "Hint: At least two numbers in the previous attempt that are not in the current one are definitely in the secret code."; break;
-                case (m == 2 && secondpm == 2 && firstpm == 0): hintMsg = "Hint: The two numbers in the current attempt that were not repeated from the previous one are definitely in the secret code."; break;
-                case (m == 2 && secondpm == 0 && firstpm == 2): hintMsg = "Hint: Two numbers in the previous attempt that are not in the current one are definitely in the secret code."; break;
-                case (m == 2 && secondpm == 2 && firstpm == 3): hintMsg = "Hint: From the numbers in the previous attempt not present in the current one, at least one is definitely included and two are likely included."; break;
-                case (m == 2 && secondpm == 3 && firstpm == 1): hintMsg = "Hint: Two numbers in the current attempt that were not in the previous one are definitely included."; break;
-                case (m == 2 && secondpm == 1 && firstpm == 3): hintMsg = "Hint: Two numbers in the previous attempt that are not in the current one are definitely included."; break;
-                case (m == 2 && firstpm == 1 && secondpm == 1): hintMsg = "Hint: At least two (possibly three) of the numbers not yet tested are definitely in the secret code."; break;
-                case (m == 3 && secondpm == 2 && firstpm == 1): hintMsg = "Hint: One number in the current attempt not found in the previous one is 100% in the code, and one number not included in either attempt is also in the code."; break;
-                case (m == 3 && secondpm == 1 && firstpm == 2): hintMsg = "Hint: One number in the previous attempt not found in the current one is 100% in the code, and one number not included in either attempt is also in the code."; break;
-                case (secondpm == 4): hintMsg = "You found all numbers! Now arrange them in the correct positions."; break;
-                case (m == 3 && secondpm == 2 && firstpm == 3): hintMsg = "Hint: A number in the previous attempt not in the current one is definitely in the code, and one of the unused numbers is also correctly included."; break;
-                case (m == 3 && secondpm == 3 && firstpm == 2): hintMsg = "Hint: One number in the current attempt not in the previous one is 100% in the code, and one unused number is also in the secret code."; break;
-                case (m == 0 && secondpm == 3 && firstpm == 1): hintMsg = "Hint: The numbers not included in these two attempts are definitely not in the secret code."; break;
-                case (m == 0 && secondpm == 1 && firstpm == 3): hintMsg = "Hint: The numbers not included in these two attempts are definitely not in the secret code."; break;
-                case (m == 2 && secondpm == 2 && firstpm == 1): hintMsg = "Hint: It is certain that numbers not included in either attempt are part of the secret code."; break;
-                case (m == 2 && secondpm == 1 && firstpm == 2): hintMsg = "Hint: It is certain that numbers not included in either attempt are part of the secret code."; break;
-                case (m == 0 && totalPm == 3): hintMsg = "Hint: Among the numbers not included in either attempt, one is certain and possibly two are in the code."; break;
-                case (m == 1 && secondpm == 2 && firstpm == 0): hintMsg = "Hint: Numbers not in either attempt are definitely in the code, and some numbers in the current attempt (not in the previous) are also present."; break;
-                case (m == 1 && secondpm == 0 && firstpm == 2): hintMsg = "Hint: Numbers not in either attempt are definitely in the code, and some numbers in the previous attempt (not in the current) are also present."; break;
-                case (m == 1 && secondpm == 0 && firstpm == 3): hintMsg = "Hint: Numbers in the previous attempt not in the current one are definitely in the code, and one unused number is also present."; break;
-                case (m == 1 && secondpm == 3 && firstpm == 0): hintMsg = "Hint: Numbers in the current attempt not in the previous one are definitely in the code, and one unused number is also present."; break;
-                case (m == 3 && secondpm == 1 && firstpm == 1): hintMsg = "Hint: Two (possibly three) of the numbers not included in either attempt are definitely in the secret code."; break;
-                default: hintMsg = "No specific hint for this comparison. Please compare your attempts manually and continue guessing."; 
+                case (m == 0 && firstpm == 2 && secondpm == 2): hintMsg = "提示：这两次尝试中均未包含的数字，绝对不在密码中。"; break;
+                case (m == 0 && totalPm == 3): hintMsg = "提示：确定这两次尝试中均未包含的某些数字是密码的一部分。"; break;
+                case (m == 1 && firstpm == 1 && secondpm == 3): hintMsg = "提示：当前尝试中（且未在上次出现）的数字里，至少有两个绝对在密码中。"; break;
+                case (m == 1 && firstpm == 3 && secondpm == 1): hintMsg = "提示：上次尝试中（且未在当前出现）的数字里，至少有两个绝对在密码中。"; break;
+                case (m == 2 && secondpm == 2 && firstpm == 0): hintMsg = "提示：当前尝试中未与上次重复的那两个数字，绝对在密码中。"; break;
+                case (m == 2 && secondpm == 0 && firstpm == 2): hintMsg = "提示：上次尝试中未在当前出现的两个数字，绝对在密码中。"; break;
+                case (m == 2 && secondpm == 2 && firstpm == 3): hintMsg = "提示：上次尝试中（且未在当前出现）的数字里，至少有一个是确定的，另有两个可能在密码中。"; break;
+                case (m == 2 && secondpm == 3 && firstpm == 1): hintMsg = "提示：当前尝试中未在上次出现的两个数字，绝对在密码中。"; break;
+                case (m == 2 && secondpm == 1 && firstpm == 3): hintMsg = "提示：上次尝试中未在当前出现的两个数字，绝对在密码中。"; break;
+                case (m == 2 && firstpm == 1 && secondpm == 1): hintMsg = "提示：尚未测试过的数字中，至少有两个（可能是三个）绝对在密码中。"; break;
+                case (m == 3 && secondpm == 2 && firstpm == 1): hintMsg = "提示：当前尝试中（且未在上次出现）的一个数字100%在密码中，且还有一个未测试过的数字也在密码中。"; break;
+                case (m == 3 && secondpm == 1 && firstpm == 2): hintMsg = "提示：上次尝试中（且未在当前出现）的一个数字100%在密码中，且还有一个未测试过的数字也在密码中。"; break;
+                case (secondpm == 4): hintMsg = "你找到了所有数字！现在请把它们排到正确的位置。"; break;
+                case (m == 3 && secondpm == 2 && firstpm == 3): hintMsg = "提示：上次尝试中（且未在当前出现）的一个数字绝对在密码中，且未使用过的数字中也有一个正确的。"; break;
+                case (m == 3 && secondpm == 3 && firstpm == 2): hintMsg = "提示：当前尝试中（且未在上次出现）的一个数字100%在密码中，且未使用过的数字中也有一个在密码中。"; break;
+                case (m == 0 && secondpm == 3 && firstpm == 1): hintMsg = "提示：这两次尝试中均未包含的数字，绝对不在密码中。"; break;
+                case (m == 0 && secondpm == 1 && firstpm == 3): hintMsg = "提示：这两次尝试中均未包含的数字，绝对不在密码中。"; break;
+                case (m == 2 && secondpm == 2 && firstpm == 1): hintMsg = "提示：确定这两次尝试中均未包含的某些数字是密码的一部分。"; break;
+                case (m == 2 && secondpm == 1 && firstpm == 2): hintMsg = "提示：确定这两次尝试中均未包含的某些数字是密码的一部分。"; break;
+                case (m == 0 && totalPm == 3): hintMsg = "提示：在两次尝试中均未出现的数字里，有一个是确定的，可能有两个在密码中。"; break;
+                case (m == 1 && secondpm == 2 && firstpm == 0): hintMsg = "提示：两次尝试均未出现的数字绝对在密码中，且当前尝试中（未在上次出现）的部分数字也在。"; break;
+                case (m == 1 && secondpm == 0 && firstpm == 2): hintMsg = "提示：两次尝试均未出现的数字绝对在密码中，且上次尝试中（未在当前出现）的部分数字也在。"; break;
+                case (m == 1 && secondpm == 0 && firstpm == 3): hintMsg = "提示：上次尝试中未在当前出现的数字绝对在密码中，且有一个未使用的数字也在。"; break;
+                case (m == 1 && secondpm == 3 && firstpm == 0): hintMsg = "提示：当前尝试中未在上次出现的数字绝对在密码中，且有一个未使用的数字也在。"; break;
+                case (m == 3 && secondpm == 1 && firstpm == 1): hintMsg = "提示：两次尝试均未包含的数字中，有两个（可能三个）绝对在密码中。"; break;
+                default: hintMsg = "此对比组合暂无特定提示。请手动对比你的尝试记录并继续猜测。"; 
             }
             document.getElementById("h").innerHTML = hintMsg;
             firstNumber = secondNumber; firstpm = secondpm;
@@ -188,22 +189,22 @@
             if (oldLabel) oldLabel.remove();
         }
 
-        let currentResult = `Guess: <strong>${userInput}</strong> | Found: ${currentTotalPm} | Position: ${position}`;
+        let currentResult = `猜测: <strong>${userInput}</strong> | 数字对: ${currentTotalPm} | 位置对: ${position}`;
         let newRow = document.createElement('div');
         newRow.className = 'attempt-row row-red';
-        newRow.innerHTML = `<span class="status-label label-red">[Current Attempt] </span>` + currentResult;
+        newRow.innerHTML = `<span class="status-label label-red">[当前尝试] </span>` + currentResult;
         
         if (rows.length > 0) {
             rows[0].classList.replace('row-normal', 'row-yellow');
             let yellowLabel = document.createElement('span');
             yellowLabel.className = 'status-label label-yellow';
-            yellowLabel.innerText = '[Previous Attempt] ';
+            yellowLabel.innerText = '[上次尝试] ';
             rows[0].prepend(yellowLabel);
         }
 
         if (position === 4) {
-            newRow.innerHTML = `🎉 Congratulations! The number was <strong>${userInput}</strong>.`;
-            document.getElementById("h").innerHTML = "Game Completed!";
+            newRow.innerHTML = `🎉 恭喜！正确数字是 <strong>${userInput}</strong>。`;
+            document.getElementById("h").innerHTML = "游戏通关！";
         }
 
         historyDiv.insertBefore(newRow, historyDiv.firstChild);
